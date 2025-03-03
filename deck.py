@@ -1,5 +1,6 @@
 from gtts import gTTS
 import os
+from tqdm import tqdm
 
 
 suits = ["hearts", "diamonds", "clubs", "spades"]
@@ -31,17 +32,22 @@ def build_list_of_prompts(deck, prompt_start="", prompt_end=""):
 def convert_to_audio(deck, prompts):
     ##Loops through each prompt and generates an audio file using gTTS
     # The files are then named and saved.
-    for card, prompt in zip(deck, prompts):
-        tts = gTTS(prompt)
-        filename = f"generated_audio/{card}.mp3"
-        os.makedirs("generated_audio", exist_ok=True)
-        tts.save(filename)
+
+
+# Make sure the output directory exists
+    os.makedirs("generated_audio", exist_ok=True)
+
+# Loop through deck and prompts with a progress bar
+    for card, prompt in tqdm(zip(deck, prompts), total=len(deck), desc="Generating Audio", unit="file"):
+        tts = gTTS(prompt)  # Generate the TTS audio
+        filename = f"generated_audio/{card}.mp3"  # Create the filename
+        tts.save(filename)  # Save the audio file
     print("All prompts converted to audio!")
 
 def main():
     ## A deck of cards is built and used to generate a list of prompts.
     deck = build_deck(suits, values)
-    prompts = build_list_of_prompts(deck, "thank you for entering your personal security number. You're spectator chose the", "")
+    prompts = build_list_of_prompts(deck, "Emma is psychic, so she knows that your card is the", "")
 
     convert_to_audio(deck, prompts)
 
