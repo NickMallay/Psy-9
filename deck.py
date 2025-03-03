@@ -1,4 +1,6 @@
-import pyperclip
+from gtts import gTTS
+import os
+
 
 suits = ["hearts", "diamonds", "clubs", "spades"]
 values = ["ace", "2","3","4","5","6","7","8","9","10","jack","queen","king"]
@@ -26,17 +28,22 @@ def build_list_of_prompts(deck, prompt_start="", prompt_end=""):
 
     return list_of_prompts
 
+def convert_to_audio(deck, prompts):
+    ##Loops through each prompt and generates an audio file using gTTS
+    # The files are then named and saved.
+    for card, prompt in zip(deck, prompts):
+        tts = gTTS(prompt)
+        filename = f"generated_audio/{card}.mp3"
+        os.makedirs("generated_audio", exist_ok=True)
+        tts.save(filename)
+    print("All prompts converted to audio!")
 
 def main():
     ## A deck of cards is built and used to generate a list of prompts.
     deck = build_deck(suits, values)
-    prompts = build_list_of_prompts(deck, "bro,", " the shit")
+    prompts = build_list_of_prompts(deck, "thank you for entering your personal security number. You're spectator chose the", "")
 
-    ## Copy the output to the clipboard to save the user from having to do it manually
-
-    output = "\n".join(prompts)
-    pyperclip.copy(output)
-    print("Prompts copied to clipboard!")
+    convert_to_audio(deck, prompts)
 
 
     
