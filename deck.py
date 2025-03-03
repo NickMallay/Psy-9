@@ -29,28 +29,32 @@ def build_list_of_prompts(deck, prompt_start="", prompt_end=""):
 
     return list_of_prompts
 
+    ##Ensure the output directory exists
+def ensure_output_directory():
+    os.makedirs("generated_audio", exist_ok=True)
+
 def convert_to_audio(deck, prompts):
     ##Loops through each prompt and generates an audio file using gTTS
     # The files are then named and saved.
 
-
-# Make sure the output directory exists
-    os.makedirs("generated_audio", exist_ok=True)
-
-# Loop through deck and prompts with a progress bar
+    ## Ensure the output directory is there
+    ensure_output_directory()
+    
+    # Loop through deck and prompts with a progress bar
     for card, prompt in tqdm(zip(deck, prompts), total=len(deck), desc="Generating Audio", unit="file"):
         tts = gTTS(prompt)  # Generate the TTS audio
-        filename = f"generated_audio/{card}.mp3"  # Create the filename
+        filename = f"generated_audio/{card.replace(' ', '_')}.mp3" ## replace " " with "_" for file name convention
+
         tts.save(filename)  # Save the audio file
+    
     print("All prompts converted to audio!")
 
 def main():
-    ## A deck of cards is built and used to generate a list of prompts.
+    ## A deck of cards is built and used to generate a list of prompts which are then turned into audio files using gtts
     deck = build_deck(suits, values)
-    prompts = build_list_of_prompts(deck, "Emma is psychic, so she knows that your card is the", "")
+    prompts = build_list_of_prompts(deck, "Your spectator chose the", "    Please note, you have an unpaid balance of forty six thousand two hundred and eighty six dollars. Good bye")
 
     convert_to_audio(deck, prompts)
-
 
     
     
