@@ -1,3 +1,5 @@
+import pyperclip
+
 suits = ["hearts", "diamonds", "clubs", "spades"]
 values = ["ace", "2","3","4","5","6","7","8","9","10","jack","queen","king"]
 
@@ -28,11 +30,14 @@ def build_list_of_prompts(deck, prompt_start="", prompt_end=""):
 def main():
     ## A deck of cards is built and used to generate a list of prompts.
     deck = build_deck(suits, values)
-    prompts = build_list_of_prompts(deck, "It was the", "that was chosen by your spectator")
+    prompts = build_list_of_prompts(deck, "bro,", " the shit")
 
-    ## the list of prompts is printed to the console for debugging purposes.
-    for prompt in prompts:
-        print(prompt)
+    ## Copy the output to the clipboard to save the user from having to do it manually
+
+    output = "\n".join(prompts)
+    pyperclip.copy(output)
+    print("Prompts copied to clipboard!")
+
 
     
     
