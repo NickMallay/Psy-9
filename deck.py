@@ -9,29 +9,28 @@ def build_deck(suits, values):
     return deck
 
 
-def build_list_of_prompts(deck):
-    ## Generate a list of prompts intended for text-to-speach from a hardcoded prefix and a list representing a deck of cards
-    
-    
-    ## This is currently a hard coded prompt, but this function will be reworked 
-    ## to accept a string as an arugment reperesenting the desired prompt
-    prompt = "Your spectator's chosen card was "
-    
+def build_list_of_prompts(deck, prompt_start="", prompt_end=""):
+    ## Generate a list of prompts intended for text-to-speach
+    #  Accepts a list of cards as well as a prompt start and end. 
+    #  Spaces are accounted for in processing, so arugments are strip()'ed
     list_of_prompts = []
     
     
-    # loop through the list, joining each card to the end of the given prompt and adding it to a new list of prompts
+    ## Loop through the list, formatting the each card between the prompt segments.
+    #  Both prompt segments default to "" so the card can be at the beginning, middle, or end. 
+    #  As these are intended to be prompts for sound files, capitalization is irrelevent. 
     for card in deck:
-        list_of_prompts.append(f"{prompt}{card}")
+        list_of_prompts.append(f"{prompt_start.strip()} {card} {prompt_end.strip()}")
+
     return list_of_prompts
 
 
 def main():
     ## A deck of cards is built and used to generate a list of prompts.
     deck = build_deck(suits, values)
-    prompts = build_list_of_prompts(deck)
+    prompts = build_list_of_prompts(deck, "It was the", "that was chosen by your spectator")
 
-    ## this list of prompts is printed to the console for debugging purposes.
+    ## the list of prompts is printed to the console for debugging purposes.
     for prompt in prompts:
         print(prompt)
 
